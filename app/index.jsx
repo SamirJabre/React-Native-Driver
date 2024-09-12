@@ -1,6 +1,7 @@
 import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { router } from 'expo-router'
+import MainButtons from '../Components/MainButtons'
 
 const App = () => {
   return (
@@ -15,7 +16,8 @@ const App = () => {
         </View>
 
         <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.btn}><Text style={styles.buttons_text}>Apply To Drive</Text></TouchableOpacity>
+        <MainButtons/>
+        <MainButtons/>
         
         </View>
 
@@ -67,17 +69,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  btn:{
-    width:'85%',
-    height:60,
-    marginBottom:15,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#0C3B2E',
-    borderRadius:100,
-  },
-  buttons_text:{
-    color:'white',
-    fontSize:20,
-  },
+  
 })
