@@ -13,6 +13,7 @@
     ],
     "name": "for-driver-app",
     "slug": "for-driver-app",
+    "scheme": "for-driver-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

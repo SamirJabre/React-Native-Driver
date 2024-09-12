@@ -1,11 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { router } from 'expo-router'
 
 const App = () => {
   return (
     <SafeAreaView style={styles.safearea}>
       <View style={styles.container}>
-        <Text>App</Text>
+        <TouchableOpacity onPress={()=>router.push('/login')}><Text>App</Text></TouchableOpacity>
       </View>
     </SafeAreaView>
   )
