@@ -6,18 +6,24 @@ import Input from '../../Components/Input';
 import { StatusBar } from 'expo-status-bar';
 import MainButtons from '../../Components/MainButtons';
 import { BASE_URL } from '@env';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const login = () => {
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
 
 
   const [form,setForm] = useState({
     email:'',
     password:''
   });
+
+  const login = async () => {
+    await axios.post(`${BASE_URL}/driver-login`,form)
+    .then((res) => {
+      alert('login successfully');
+      router.replace('/dashboard');
+    })
+  }
 
 
   return (
@@ -29,10 +35,10 @@ const login = () => {
     
     <View style={styles.inputContainer}>
     <Input value={form.email} placeholder={"Email"} onchange={(e)=>setForm({...form, email: e})} imageSource={require('../../assets/icons/email.png')} keyboardType="mail-address"/>
-    <Input value={form.password} placeholder={"Password"} onchange={(e)=>setForm({...form, password: e})} imageSource={require('../../assets/icons/password.png')} showPassword={showPassword}/>
+    <Input value={form.password} placeholder={"Password"} onchange={(e)=>setForm({...form, password: e})} imageSource={require('../../assets/icons/password.png')}/>
     </View>
 
-    <MainButtons text={"Login"} onpress={()=>{router.replace('/dashboard')}}/>
+    <MainButtons text={"Login"} onpress={login}/>
 
     <StatusBar  style='dark'/>
     </View>
