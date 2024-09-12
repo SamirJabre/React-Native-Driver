@@ -17,7 +17,7 @@ const App = () => {
 
         <View style={styles.buttonsContainer}>
         <MainButtons text={'Apply To Drive'}/>
-        <MainButtons text={'Login'}/>
+        <MainButtons text={'Login'} onpress={()=>{router.push('/login')}}/>
         
         </View>
 
