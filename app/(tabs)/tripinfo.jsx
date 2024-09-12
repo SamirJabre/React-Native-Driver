@@ -15,6 +15,7 @@ const tripinfo = () => {
   const [busId, setBusId] = useState();
   const [currentLocation, setCurrentLocation] = useState('');
   const [socket, setSocket] = useState(null);
+  const [tripInfo, setTripInfo] = useState('');
 
   // Fetch bus ID based on trip ID
   useEffect(() => {
@@ -23,9 +24,10 @@ const tripinfo = () => {
     })
     .then(res => {
       console.log(res.data);
+      setTripInfo(res.data);
       setBusId(res.data.bus_id);
     });
-  }, [busId]);
+  }, []);
 
   // Initialize Socket.IO client
   useEffect(() => {
@@ -61,8 +63,6 @@ const tripinfo = () => {
         (location) => {
           const coords = location.coords;
           console.log(coords);
-          setCurrentLatitude(coords.latitude);
-          setCurrentLongitude(coords.longitude);
           setCurrentLocation(coords);
           console.log(coords.latitude);
           console.log('this is the longitude '+coords.longitude);
@@ -78,11 +78,12 @@ const tripinfo = () => {
     })();
   }, [busId, socket]);
 
+
   return (
     <SafeAreaView style={style.area}>
     <View style={style.container}>
 
-    <Text style={style.tripid}>Trip ID : #{tripId} and the latitude is {currentLocation.latitude}</Text>
+    <Text style={style.tripid}>Trip ID : #{tripId}</Text>
     
     <View style={style.mapContainer}>
     
@@ -109,6 +110,18 @@ const tripinfo = () => {
         )
     }
     </View>
+
+    <View style={style.tripInfo}>
+    <View style={style.left}>
+      <Text style={style.infotext}>From : {tripInfo.from}</Text>
+      <Text style={style.infotext}>To : {tripInfo.to}</Text>
+    </View>
+
+    <View style={style.right}>
+      <Text style={style.infotext}>Passengers # : {tripInfo.passenger_load}</Text>
+      <Text style={style.infotext}>Arrival Time : {tripInfo.arrival_time}</Text></View>
+    </View>
+
 
     </View>
     </SafeAreaView>
@@ -140,6 +153,31 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     margin: 10,
+  },
+  tripInfo:{
+    width: '80%',
+    height: '20%',
+    backgroundColor: 'gray',
+    marginTop: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  left:{
+    width: '40%',
+    height: '100%',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+  },
+  right:{
+    width: '50%',
+    height: '100%',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+  },
+  infotext:{
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
