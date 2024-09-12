@@ -23,7 +23,7 @@ export default BusBox
 
 const styles = StyleSheet.create({
     tripContainer:{
-    width: '70%',
+    width: '80%',
     height: '40%',
     flexDirection: 'row',
     justifyContent: 'center',
