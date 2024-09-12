@@ -16,8 +16,8 @@ const App = () => {
         </View>
 
         <View style={styles.buttonsContainer}>
-        <MainButtons/>
-        <MainButtons/>
+        <MainButtons text={'Apply To Drive'}/>
+        <MainButtons text={'Login'}/>
         
         </View>
 
