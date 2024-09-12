@@ -5,7 +5,7 @@ import BackButton from '../../Components/BackButton';
 import Input from '../../Components/Input';
 import { StatusBar } from 'expo-status-bar';
 import MainButtons from '../../Components/MainButtons';
-
+import { BASE_URL } from '@env';
 
 const login = () => {
 
