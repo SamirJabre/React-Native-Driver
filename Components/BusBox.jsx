@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { router } from 'expo-router'
 
-const BusBox = ({from , to , time , date}) => {
+const BusBox = ({from , to , time , date ,tripId}) => {
   return (
-    <TouchableOpacity style={styles.tripContainer}>
+    <TouchableOpacity style={styles.tripContainer} onPress={()=>{router.push(`/tripinfo?tripId=${tripId}`)}}>
 
       <View style={styles.left}>
         <Text style={styles.infotext}>From: {from}</Text>

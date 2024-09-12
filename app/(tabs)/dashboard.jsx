@@ -12,8 +12,8 @@ const dashboard = () => {
   const [trips, setTrips] = useState([]);
 
 
-  useEffect(async () => {
-    await axios.post(`${BASE_URL}/driver-trips` , {
+  useEffect(() => {
+    axios.post(`${BASE_URL}/driver-trips` , {
       driver_id: driverId,
     })
     .then((res) => {
@@ -53,7 +53,7 @@ const dashboard = () => {
 
     {
       closestTrip ? 
-      <BusBox from={closestTrip.from} to={closestTrip.to} time={closestTrip.departure_time} date={closestTrip.date}/>
+      <BusBox from={closestTrip.from} to={closestTrip.to} time={closestTrip.departure_time} date={closestTrip.date} tripId={closestTrip.id}/>
       :
       <Text>No Upcoming Trips</Text>
     }
