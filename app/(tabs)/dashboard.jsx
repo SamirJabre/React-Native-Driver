@@ -1,6 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BusBox from '../../Components/BusBox'
+import BusContainer from '../../Components/BusConatiner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
 import { BASE_URL } from '@env';
@@ -42,6 +43,7 @@ const dashboard = () => {
   };
 
   const closestTrip = findClosestDate(trips);
+  const otherTrips = trips.filter(trip => trip.id !== closestTrip.id);
 
 
   return (
@@ -63,8 +65,15 @@ const dashboard = () => {
     <View style={styles.otherTrips}>
     <Text style={styles.text}>Other Trips</Text>
 
-    <ScrollView style={styles.scrollTrips}>
-    
+    <ScrollView style={styles.scrollTrips} >
+    {
+          otherTrips.length > 0 ? 
+          otherTrips.map(trip => (
+            <BusContainer key={trip.id} from={trip.from} to={trip.to} time={trip.departure_time} date={trip.date} />
+          ))
+          :
+          <Text style={{margin:'auto', marginTop:100, fontSize:20}}>No Other Trips</Text>
+        }
     </ScrollView>
 
     </View>
@@ -102,11 +111,14 @@ const styles = StyleSheet.create({
   otherTrips:{
     width: '100%',
     height: '100%',
-    backgroundColor: 'red',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   scrollTrips:{
-    backgroundColor: 'blue',
+    marginTop: 10,
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    backgroundColor: 'gray',
   }
 })

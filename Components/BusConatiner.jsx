@@ -22,14 +22,15 @@ export default BusContainer
 
 const styles = StyleSheet.create({
     tripContainer:{
-    width: '80%',
-    height: '40%',
+    width: '90%',
+    height: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: '#f0f0f0',
     borderWidth: 1,
-    margin:10,
+    margin:'auto',
+    marginTop: 10,
   },
   left:{
     width: '45%',
