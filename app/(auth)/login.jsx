@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     height: '30%',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: 'red',
     marginBottom: 20,
   },
 })
