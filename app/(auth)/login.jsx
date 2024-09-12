@@ -17,14 +17,12 @@ const login = () => {
     password:''
   });
 
-  const login = async () => {
-    await axios.post(`${BASE_URL}/driver-login`,form)
-    .then((res) => {
-      alert('login successfully');
-      router.replace('/dashboard');
+  const handleLogin = () => {
+    axios.post(`${BASE_URL}/driver-login`,form)
+    .then(async res => {
+      router.push(`/dashboard?driverId=${res.data.id}`);
     })
   }
-
 
   return (
     <View style={styles.container}>
@@ -38,7 +36,7 @@ const login = () => {
     <Input value={form.password} placeholder={"Password"} onchange={(e)=>setForm({...form, password: e})} imageSource={require('../../assets/icons/password.png')}/>
     </View>
 
-    <MainButtons text={"Login"} onpress={login}/>
+    <MainButtons text={"Login"} onpress={handleLogin}/>
 
     <StatusBar  style='dark'/>
     </View>

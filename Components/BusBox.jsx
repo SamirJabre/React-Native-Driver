@@ -1,18 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const BusBox = () => {
+const BusBox = ({from , to , time , date}) => {
   return (
     <TouchableOpacity style={styles.tripContainer}>
 
       <View style={styles.left}>
-        <Text style={styles.infotext}>From:</Text>
-        <Text style={styles.infotext}>To:</Text>
+        <Text style={styles.infotext}>From: {from}</Text>
+        <Text style={styles.infotext}>To: {to}</Text>
       </View>
 
       <View style={styles.right}>
-      <Text style={styles.infotext}>Time:</Text>
-      <Text style={styles.infotext}>Date:</Text>
+      <Text style={styles.infotext}>Time: {time}</Text>
+      <Text style={styles.infotext}>Date: {date}</Text>
       </View>
     </TouchableOpacity>
   )

@@ -1,8 +1,49 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BusBox from '../../Components/BusBox'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLocalSearchParams } from 'expo-router';
+import { BASE_URL } from '@env';
+import axios from 'axios';
 
 const dashboard = () => {
+
+  const { driverId } = useLocalSearchParams();
+  const [trips, setTrips] = useState([]);
+
+
+  useEffect(async () => {
+    await axios.post(`${BASE_URL}/driver-trips` , {
+      driver_id: driverId,
+    })
+    .then((res) => {
+      console.log(res.data);
+      setTrips(res.data);
+    })
+  },[])
+
+  const findClosestDate = (trips) => {
+    const currentDate = new Date();
+  
+    let closestTrip = null;
+    let smallestDifference = Infinity;
+  
+    trips.forEach(trip => {
+      const tripDate = new Date(trip.date);
+      const difference = Math.abs(tripDate - currentDate);
+  
+      if (difference < smallestDifference) {
+        smallestDifference = difference;
+        closestTrip = trip;
+      }
+    });
+  
+    return closestTrip;
+  };
+
+  const closestTrip = findClosestDate(trips);
+
+
   return (
     <SafeAreaView style={styles.safearea}>
     <View style={styles.container}>
@@ -10,7 +51,12 @@ const dashboard = () => {
     <View style={styles.upComingContainer}>
     <Text style={styles.text}>Upcoming Trip</Text>
 
-    <BusBox/>
+    {
+      closestTrip ? 
+      <BusBox from={closestTrip.from} to={closestTrip.to} time={closestTrip.departure_time} date={closestTrip.date}/>
+      :
+      <Text>No Upcoming Trips</Text>
+    }
 
     </View>
 
