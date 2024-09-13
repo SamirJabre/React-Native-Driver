@@ -7,7 +7,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebaseConfig';
 
 
-export const form = () ={
+const form = () ={
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -162,3 +162,5 @@ export const form = () ={
     </SafeAreaView>
   );
 };
+
+export default form
