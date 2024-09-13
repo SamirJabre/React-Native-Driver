@@ -66,4 +66,16 @@ export const form = () ={
     }
   };
 
+  const handleSubmit = async () => {
+    // Upload images and get URLs
+    const profilePictureUrl = await uploadImage(profilePicture);
+    const idPhotoUrl = await uploadImage(idPhoto);
+    const driverLicenseUrl = await uploadImage(driverLicense);
+
+    // If all uploads were successful, send data to the database
+    if (profilePictureUrl && idPhotoUrl && driverLicenseUrl) {
+      await sendToDatabase(profilePictureUrl, idPhotoUrl, driverLicenseUrl);
+    }
+  };
+
 }
