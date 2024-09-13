@@ -1,8 +1,7 @@
-// firebaseConfig.js
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 
-// Replace with your Firebase project configuration
+
 const firebaseConfig = {
   apiKey: 'AIzaSyDw_943k3Ch9YebqavZrzU731GZz7-FEYA',
   authDomain: 'ibus-a0c38.firebaseapp.com',
