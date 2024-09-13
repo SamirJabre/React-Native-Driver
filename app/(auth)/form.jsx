@@ -99,4 +99,66 @@ export const form = () ={
     }
   }
 
-}
+  
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Text style={styles.header}>Driver Application Form</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChangeText={(text) => setPhoneNumber(text)}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Age"
+          value={age}
+          onChangeText={(text) => setAge(text)}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Address"
+          value={address}
+          onChangeText={(text) => setAddress(text)}
+        />
+        <View style={styles.uploadContainer}>
+          <Text>Profile Picture</Text>
+          <Button style={styles.btn} title="Upload" onPress={() => pickImage(setProfilePicture)} />
+        </View>
+        <View style={styles.uploadContainer}>
+          <Text>ID Photo</Text>
+          <Button title="Upload" onPress={() => pickImage(setIdPhoto)} />
+        </View>
+        <View style={styles.uploadContainer}>
+          <Text>Driver License</Text>
+          <Button title="Upload" onPress={() => pickImage(setDriverLicense)} />
+        </View>
+        <Button title="Submit" onPress={handleSubmit} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
