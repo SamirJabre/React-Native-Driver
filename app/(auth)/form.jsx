@@ -1,9 +1,9 @@
-import { Button, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { BASE_URL } from '@env';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebaseConfig';
 
 const form = () => {
@@ -16,7 +16,6 @@ const form = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [idPhoto, setIdPhoto] = useState(null);
   const [driverLicense, setDriverLicense] = useState(null);
-  const [downloadUrl, setDownloadUrl] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -42,18 +41,13 @@ const form = () => {
 
   const uploadImage = async (image) => {
     if (!image) return;
-
-    // Create a reference to the location where the image will be uploaded
     const response = await fetch(image);
     const blob = await response.blob();
     const filename = image.substring(image.lastIndexOf('/') + 1);
     const storageRef = ref(storage, `images/${filename}`);
 
     try {
-      // Upload the file to Firebase Storage
       await uploadBytes(storageRef, blob);
-
-      // Get the downloadable URL
       const url = await getDownloadURL(storageRef);
       return url;
     } catch (error) {
@@ -68,12 +62,9 @@ const form = () => {
 
 
   const handleSubmit = async () => {
-    // Upload images and get URLs
     const profilePictureUrl = await uploadImage(profilePicture);
     const idPhotoUrl = await uploadImage(idPhoto);
     const driverLicenseUrl = await uploadImage(driverLicense);
-
-    // If all uploads were successful, send data to the database
     if (profilePictureUrl && idPhotoUrl && driverLicenseUrl) {
       await sendToDatabase(profilePictureUrl, idPhotoUrl, driverLicenseUrl);
     }
