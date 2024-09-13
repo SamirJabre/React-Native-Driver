@@ -163,4 +163,9 @@ const form = () ={
   );
 };
 
+
 export default form
+
+const styles = StyleSheet.create({
+  
+})
