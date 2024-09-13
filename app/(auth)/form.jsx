@@ -78,4 +78,25 @@ export const form = () ={
     }
   };
 
+
+  const sendToDatabase = async (profilePictureUrl,idPhotoUrl,driverLicenseUrl) => {
+    try{
+      await axios.post(`${BASE_URL}/driver-app`,{
+        name: name,
+        email: email,
+        password: password,
+        phone_number: phoneNumber,
+        age: age,
+        address: address,
+        profile_picture: profilePictureUrl,
+        id_photo: idPhotoUrl,
+        driver_license: driverLicenseUrl,
+      })
+      .then((res)=>alert('Form submitted successfully'))
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
 }
