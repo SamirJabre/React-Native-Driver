@@ -44,4 +44,26 @@ export const form = () ={
     }
   };
 
+  const uploadImage = async (image) => {
+    if (!image) return;
+
+    // Create a reference to the location where the image will be uploaded
+    const response = await fetch(image);
+    const blob = await response.blob();
+    const filename = image.substring(image.lastIndexOf('/') + 1);
+    const storageRef = ref(storage, `images/${filename}`);
+
+    try {
+      // Upload the file to Firebase Storage
+      await uploadBytes(storageRef, blob);
+
+      // Get the downloadable URL
+      const url = await getDownloadURL(storageRef);
+      return url;
+    } catch (error) {
+      console.error('Error uploading image: ', error);
+      alert('Failed to upload image');
+    }
+  };
+
 }
