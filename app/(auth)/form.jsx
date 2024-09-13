@@ -57,10 +57,6 @@ const form = () => {
   };
 
 
-
-
-
-
   const handleSubmit = async () => {
     const profilePictureUrl = await uploadImage(profilePicture);
     const idPhotoUrl = await uploadImage(idPhoto);
@@ -83,7 +79,18 @@ const form = () => {
         id_photo: idPhotoUrl,
         driver_license: driverLicenseUrl,
       })
-      .then((res)=>alert('Form submitted successfully'))
+      .then((res)=>{
+        alert('Form submitted successfully')
+        setName('')
+        setEmail('')
+        setPassword('')
+        setPhoneNumber('')
+        setAge('')
+        setAddress('')
+        setProfilePicture(null)
+        setIdPhoto(null)
+        setDriverLicense(null)
+      })
     }
     catch(error){
       console.log(error)
