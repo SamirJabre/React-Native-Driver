@@ -6,9 +6,7 @@ import { BASE_URL } from '@env';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebaseConfig';
 
-
-const form = () ={
-
+const form = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +18,6 @@ const form = () ={
   const [driverLicense, setDriverLicense] = useState(null);
   const [downloadUrl, setDownloadUrl] = useState(null);
 
-
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -29,7 +26,6 @@ const form = () ={
       }
     })();
   }, []);
-
 
   const pickImage = async (setState) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,6 +62,11 @@ const form = () ={
     }
   };
 
+
+
+
+
+
   const handleSubmit = async () => {
     // Upload images and get URLs
     const profilePictureUrl = await uploadImage(profilePicture);
@@ -77,7 +78,6 @@ const form = () ={
       await sendToDatabase(profilePictureUrl, idPhotoUrl, driverLicenseUrl);
     }
   };
-
 
   const sendToDatabase = async (profilePictureUrl,idPhotoUrl,driverLicenseUrl) => {
     try{
@@ -98,8 +98,6 @@ const form = () ={
       console.log(error)
     }
   }
-
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,11 +161,10 @@ const form = () ={
   );
 };
 
-
 export default form
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     flex: 1,
     padding: 20,
     backgroundColor: '#f8f9fa',
@@ -194,5 +191,8 @@ const styles = StyleSheet.create({
     height: 200,
     marginTop: 20,
     borderRadius: 10,
+  },
+  btn: {
+    backgroundColor: 'green',
   },
 })
