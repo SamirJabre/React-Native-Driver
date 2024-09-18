@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 
 // Socket.IO server URL
-const SOCKET_SERVER_URL = 'http://192.168.1.108:6001';
+const SOCKET_SERVER_URL = 'http://192.168.1.107:6001';
 
 const tripinfo = () => {
   const { tripId } = useLocalSearchParams();
