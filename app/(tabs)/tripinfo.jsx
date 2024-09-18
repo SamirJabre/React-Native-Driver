@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import io from 'socket.io-client';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { BASE_URL } from '@env';
 import axios from 'axios';
 import * as Location from 'expo-location';
-// import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 // Socket.IO server URL
 const SOCKET_SERVER_URL = 'http://192.168.1.108:6001';
@@ -16,6 +16,7 @@ const tripinfo = () => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [socket, setSocket] = useState(null);
   const [tripInfo, setTripInfo] = useState('');
+  const { data } = useLocalSearchParams();
 
   // Fetch bus ID based on trip ID
   useEffect(() => {
@@ -87,7 +88,7 @@ const tripinfo = () => {
     
     <View style={style.mapContainer}>
     
-    {/* {
+    {
       currentLocation && (
         <MapView
         style={StyleSheet.absoluteFillObject}
@@ -108,7 +109,7 @@ const tripinfo = () => {
         />
         </MapView>
         )
-    } */}
+    }
     </View>
 
     <View style={style.tripInfo}>
@@ -122,6 +123,17 @@ const tripinfo = () => {
       <Text style={style.infotext}>Arrival Time : {tripInfo.arrival_time}</Text></View>
     </View>
 
+    <TouchableOpacity style={style.scanQRCode} onPress={()=>router.push('/scanQR')}>
+    <Text style={style.scanQRCodeText}>Scan QR Code</Text>
+    </TouchableOpacity>
+    
+    <View style={style.resultContainer}>
+    {
+      data && (
+        <Text>{data}</Text>
+      )
+    }
+    </View>
 
     </View>
     </SafeAreaView>
@@ -178,6 +190,29 @@ const style = StyleSheet.create({
   infotext:{
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  scanQRCode:{
+    marginTop: 10,
+    width: '50%',
+    height: '10%',
+    backgroundColor: '#0C3B2E',
+    marginTop: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scanQRCodeText:{
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  resultContainer:{
+    width: '80%',
+    height: '20%',
+    backgroundColor: 'gray',
+    marginTop: 10,
+    borderRadius: 10,
+    justifyContent: 'flex-start',
   },
 });
 
