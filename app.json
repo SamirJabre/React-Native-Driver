@@ -15,7 +15,8 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "name": "for-driver-app",
     "slug": "for-driver-app",

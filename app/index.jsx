@@ -1,9 +1,24 @@
 import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { router } from 'expo-router'
+import React, { useEffect } from 'react'
+import { router, SplashScreen } from 'expo-router'
+import { useFonts } from 'expo-font';
 import MainButtons from '../Components/MainButtons'
-
+SplashScreen.preventAutoHideAsync();
 const App = () => {
+  const [fontsLoaded , error] = useFonts({
+    'Inter-Regular': require('../assets/fonts/Inter-Regular.otf'),
+    'Inter-ExtraBold': require('../assets/fonts/Inter-ExtraBold.otf'),
+    'Inter-SemiBold': require('../assets/fonts/Inter-SemiBold.otf'),
+  });
+
+  useEffect(()=>{
+    if(error) throw error;
+    if(fontsLoaded) SplashScreen.hideAsync();
+  },[fontsLoaded, error]);
+
+
+  if(!fontsLoaded && !error) return null;
+
   return (
     <SafeAreaView style={styles.safearea}>
         <View style={styles.imageContainer}>
@@ -56,12 +71,13 @@ const styles = StyleSheet.create({
   },
   text1:{
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Inter-SemiBold',
     marginBottom: 10,
   },
   text2:{
     fontSize: 16,
     color: 'gray',
+    fontFamily: 'Inter-Regular',
   },
   buttonsContainer:{
     width: '100%',

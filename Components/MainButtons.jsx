@@ -22,5 +22,6 @@ const styles = StyleSheet.create({
   buttons_text:{
     color:'white',
     fontSize:20,
+    fontFamily:'Inter-SemiBold',
   },
 })

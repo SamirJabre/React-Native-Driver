@@ -7,9 +7,9 @@ const input = ({placeholder , value , onchange , imageSource , showPassword}) =>
   return (
 
     <View style={styles.inputcontainer}>
+    <Image source={imageSource} style={styles.icon}/>
     <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={onchange} secureTextEntry={placeholder === 'Password' && !showPassword} underlineColorAndroid="transparent">
     </TextInput>
-    <Image source={imageSource} style={styles.icon}/>
     </View>
 
 
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'grey',
     fontSize: 16,
+    fontFamily: 'Inter-Regular',
   },
   icon:{
     width: 30,
