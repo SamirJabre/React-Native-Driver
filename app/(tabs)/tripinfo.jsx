@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import io from 'socket.io-client';
 import { router, useLocalSearchParams } from 'expo-router';
 import { BASE_URL } from '@env';
 import axios from 'axios';
 import * as Location from 'expo-location';
-// import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Socket.IO server URL
 const SOCKET_SERVER_URL = 'http://192.168.1.108:6001';
 
 const tripinfo = () => {
+  const [trip_id, setTrip_id] = useState('');
   const { tripId } = useLocalSearchParams();
   const [busId, setBusId] = useState();
   const [currentLocation, setCurrentLocation] = useState('');
@@ -18,7 +19,21 @@ const tripinfo = () => {
   const [tripInfo, setTripInfo] = useState('');
   const { data } = useLocalSearchParams();
 
-  // Fetch bus ID based on trip ID
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedTripId = await AsyncStorage.getItem('tripId');
+        if (storedTripId) setTrip_id(parseInt(storedTripId));
+      } catch (error) {
+        console.error('Error retrieving data from AsyncStorage', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
   useEffect(() => {
     axios.post(`${BASE_URL}/tripinfo`, {
       id: tripId
@@ -30,7 +45,6 @@ const tripinfo = () => {
     });
   }, []);
 
-  // Initialize Socket.IO client
   useEffect(() => {
     const newSocket = io(SOCKET_SERVER_URL);
     setSocket(newSocket);
@@ -42,11 +56,9 @@ const tripinfo = () => {
     };
   }, []);
 
-  // Watch position and emit location data
   useEffect(() => {
     if (!busId || !socket) return;
 
-    // Request location permissions
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -54,7 +66,6 @@ const tripinfo = () => {
         return;
       }
 
-      // Watch position
       Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.High,
@@ -68,7 +79,6 @@ const tripinfo = () => {
           console.log(coords.latitude);
           console.log('this is the longitude '+coords.longitude);
 
-          // Emit location data to the server
           socket.emit('updateLocation', {
             busId: busId,
             current_latitude: coords.latitude,
@@ -79,16 +89,26 @@ const tripinfo = () => {
     })();
   }, [busId, socket]);
 
-
   return (
-    <SafeAreaView style={style.area}>
-    <View style={style.container}>
+    <SafeAreaView style={styles.area}>
+    <View style={styles.container}>
 
-    <Text style={style.tripid}>Trip ID : #{tripId}</Text>
+    <View style={styles.headerContainer}>
+    <TouchableOpacity style={styles.backBtn} onPress={()=>{router.push('/dashboard');AsyncStorage.removeItem('tripId')}}>
+      <Image source={require('../../assets/icons/back.png')} style={styles.icon}/>
+    </TouchableOpacity>
+    <Text style={styles.tripid}>Trip ID : #{trip_id}</Text>
+
+    <View style={styles.unwanted}>
+    </View>
+
+    </View>
+
+
     
-    <View style={style.mapContainer}>
+    <View style={styles.mapContainer}>
     
-    {/* {
+    {
       currentLocation && (
         <MapView
         style={StyleSheet.absoluteFillObject}
@@ -109,28 +129,28 @@ const tripinfo = () => {
         />
         </MapView>
         )
-    } */}
+    }
     </View>
 
-    <View style={style.tripInfo}>
-    <View style={style.left}>
-      <Text style={style.infotext}>From : {tripInfo.from}</Text>
-      <Text style={style.infotext}>To : {tripInfo.to}</Text>
+    <View style={styles.tripInfo}>
+    <Text style={styles.infoText}>Tripoli</Text>
+    <View style={styles.line}><Image source={require('../../assets/line.png')}/></View>
+    <Text style={styles.infoText}>Beirut</Text>
     </View>
 
-    <View style={style.right}>
-      <Text style={style.infotext}>Passengers # : {tripInfo.passenger_load}</Text>
-      <Text style={style.infotext}>Arrival Time : {tripInfo.arrival_time}</Text></View>
+    <View style={styles.timeDate}>
+    <Text style={styles.timeDateText}>Date: 2024-09-16</Text>
+    <Text style={styles.timeDateText}>Time: 10:00</Text>
     </View>
 
-    <TouchableOpacity style={style.scanQRCode} onPress={()=>router.push('/scanQR')}>
-    <Text style={style.scanQRCodeText}>Scan QR Code</Text>
+    <TouchableOpacity style={styles.scanQRCode} onPress={()=>router.push('/scanQR')}>
+    <Text style={styles.scanQRCodeText}>Scan QR Code</Text>
     </TouchableOpacity>
     
-    <View style={style.resultContainer}>
+    <View style={styles.resultContainer}>
     {
       data && (
-        <Text>{data}</Text>
+        <Image style={{height:'100%',width:'100%'}} source={require('../../assets/belong.png')}/>
       )
     }
     </View>
@@ -140,7 +160,7 @@ const tripinfo = () => {
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   area: {
     height: '100%',
     width: '100%',
@@ -154,12 +174,31 @@ const style = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  headerContainer:{
+    width: '90%',
+    marginVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backBtn:{
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  unwanted:{
+    width: 50,
+    height: 50,
+  },
+  icon:{
+    width: '50%',
+    height: '50%',
+  },
   mapContainer:{
-    width: '80%',
+    width: '100%',
     height: '35%',
-    backgroundColor: 'red',
-    marginTop: '10%',
-    borderRadius: 10,
+    backgroundColor: 'gray',
   },
   tripid:{
     fontSize: 20,
@@ -167,13 +206,12 @@ const style = StyleSheet.create({
     margin: 10,
   },
   tripInfo:{
-    width: '80%',
-    height: '20%',
-    backgroundColor: 'gray',
-    marginTop: 10,
-    borderRadius: 10,
+    width: '90%',
+    height: 30,
+    margin: 20,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   left:{
     width: '40%',
@@ -194,7 +232,7 @@ const style = StyleSheet.create({
   scanQRCode:{
     marginTop: 10,
     width: '50%',
-    height: '10%',
+    height: 60,
     backgroundColor: '#0C3B2E',
     marginTop: 10,
     borderRadius: 10,
@@ -204,16 +242,37 @@ const style = StyleSheet.create({
   scanQRCodeText:{
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Inter-SemiBold',
   },
   resultContainer:{
-    width: '80%',
-    height: '20%',
-    backgroundColor: 'gray',
+    width: 100,
+    height: 100,
     marginTop: 10,
-    borderRadius: 10,
-    justifyContent: 'flex-start',
+    borderRadius: 100,
   },
+  infoText:{
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    color: '#0C3B2E',
+  },
+  line:{
+    width: '50%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timeDate:{
+    width: '90%',
+    height: '10%',
+    justifyContent: 'space-between',
+    alignItems :'flex-start',
+    marginBottom: 10,
+  },
+  timeDateText:{
+    fontSize: 14,
+    fontFamily: 'Inter-SemiBold',
+    color: 'black',
+  }
 });
 
 

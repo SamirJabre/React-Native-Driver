@@ -20,7 +20,9 @@ const login = () => {
   const handleLogin = () => {
     axios.post(`${BASE_URL}/driver-login`,form)
     .then(async res => {
-      router.push(`/dashboard?driverId=${res.data.id}`);
+      await AsyncStorage.setItem('driverId',res.data.id.toString());
+      await AsyncStorage.setItem('driverName',res.data.name.toString());
+      router.push(`/dashboard?driverId=${res.data.id}&driverName=${res.data.name}`);
     })
   }
 
